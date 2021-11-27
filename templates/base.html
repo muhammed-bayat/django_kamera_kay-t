@@ -1,0 +1,311 @@
+{% include 'header.html' %}
+
+{% block content %}
+
+<h1>base</h1>
+  {% for instance in object_list %}
+  <h1>{{ instance.header }}  </h1>
+  <br><br><br>
+    <h4>{{ instance.description }}  </h4>
+    <br><br>
+    {% if  instance.rating  == "Video" %}
+    <h2 > Video Süresi {{ instance.video_time }}: {{ instance.video_sec }} </h2>
+    <br>
+    <h2 > Video totalsecs: {{ instance.totalsecs }} </h2>
+    <br><br>
+    <!--- MODAL -->
+
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+   <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+ <!-- Button trigger modal -->
+
+<!-- Button trigger modal -->
+
+<div class="modal fade" id="ModalExample" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: black;">KAMERA ONAY </h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">KAPAT</span>
+        </button>
+      </div>
+      <div class="modal-body" style="color: black;">Kameranızı açmak için lütfen onaylayın. Onay butonuna bastıktan sonra otomatik kayıt başlayacaktır </div>
+      <p><img src="data:image/jpeg;base64,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" alt="" /></p>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        <button class="btn btn-success " type="button"  onclick="test()" data-dismiss="modal">Ok Continue</button>
+
+        <script>
+          function test() {
+            alert("  Kameranız açılıyor. Tamam'a basınız");
+            document.getElementById("myImg").src = "{% url 'webcam_feed' %}";
+          }
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#ModalExample').modal('show');
+    });
+</script>
+
+<!-- MODAL SON-->
+
+
+<img id="myImg" src="https://cdn.t3kys.com/static/assets/media/logos/KYS_LOGO-01.png" width="1024" height="768">
+    <h1 id="site-name"><a href="{% url 'admin:index' %}"> Yönetim</a></h1>
+
+
+
+  {% else %}
+  <main class="container">
+    <section class="section_1">
+
+      <form class="form_1">
+        <span class="form_1_circle"></span>
+        <div>
+          <input checked type="radio" name="section_1_radio" class="input" id="Pepperoni" />
+          <label class="cradio" for="Pepperoni"></label>
+          <label for="Pepperoni">{{ instance.cevap_a }}</label>
+
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Mushrooms" />
+          <label class="cradio" for="Mushrooms"></label>
+          <label for="Mushrooms">{{ instance.cevap_b }}</label>
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Onions" />
+          <label class="cradio" for="Onions"></label>
+          <label for="Onions">{{ instance.cevap_c }}</label>
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Sausage" />
+          <label class="cradio" for="Sausage"></label>
+          <label for="Sausage">{{ instance.cevap_d }}</label>
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Bacon" />
+          <label class="cradio" for="Bacon"></label>
+          <label for="Bacon">{{ instance.cevap_e }}</label>
+        </div>
+
+      </form>
+    </section>
+  </main>
+
+
+<style>
+  :root {
+  --color-text: #000000;
+  --color-text-light: #db1e1e;
+  --color-expression-text: #36ccf1;
+  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
+
+}
+
+
+
+.section_1,
+.section_2,
+.section_3 {
+  width: 85rem;
+  padding: 3rem;
+  border: 1px solid;
+  font-size: 2rem;
+  box-sizing: border-box;
+}
+
+section header {
+  font-size: 2.3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+
+
+form > div {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input[type="radio"] {
+  transform: translate(2px, -4px) scale(1.9);
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  cursor: pointer;
+}
+
+label {
+  cursor: pointer;
+}
+
+.cradio {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  padding: 9px;
+  border: 3px solid #34495e;
+  border-radius: 50%;
+  transform: translate(0.5px, -2px);
+  margin-right: 0.5rem;
+  background: transparent;
+  margin-right: 1.3rem;
+}
+
+.cradio::after {
+  content: "";
+  width: 70%;
+  height: 70%;
+  position: absolute;
+  top: 48%;
+  left: 51%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+}
+/* .input[type="radio"]:checked + .cradio:after {
+    background: var(--color-text);
+} */
+
+.form_1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.form_1_circle {
+  width: 1.4rem;
+  height: 1.4rem;
+  position: fixed;
+  background: var(--color-text);
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  transform-origin: center;
+}
+
+</style>
+
+<script>
+  window.onload = () => {
+  const DOMSelectors = {
+    circle1: ".form_1_circle",
+    form1: ".form_1",
+    input1: `.input[type="radio"]:checked`
+  };
+
+  const Selectors = {
+    cradio: ".cradio"
+  };
+
+  DOMElements = getDOMElements();
+  DOMElements.form1.addEventListener("change", handleChangeEvent);
+  window.addEventListener("resize", () => {
+    DOMElements.circle1.style.transition = `none`;
+    setDot();
+  });
+  window.addEventListener("scroll", () => {
+    DOMElements.circle1.style.transition = "none";
+    setDot();
+  });
+
+  function handleChangeEvent(event) {
+    event.preventDefault();
+    const input = event.target;
+    DOMElements = getDOMElements();
+    DOMElements.circle1.style.transition = `transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)`;
+    setDot();
+  }
+
+  function setDot() {
+    const checkedEleRect = DOMElements.input1.getClientRects()[0];
+    DOMElements.circle1.style.transform = `translate(${
+      Math.round(checkedEleRect.left) + 4
+    }px, ${Math.round(checkedEleRect.top) + 4}px)`;
+  }
+
+  setDot();
+
+  function getDOMElements() {
+    let DOMElements = {};
+    for (let selector in DOMSelectors) {
+      DOMElements[selector] = document.querySelector(DOMSelectors[selector]);
+    }
+    return DOMElements;
+  }
+};
+
+</script>
+  {% endif %}
+
+    <h4 style="color: red;">{{ instance.rating }}  </h4>
+
+    <div class="pagination" >
+      <span class='step-links'>
+
+        {% if object_list.has_previous %}
+        <a href='?page=1'>First</a>
+        <a style="color: white;" href='?page={{ object_list.previous_page_number }}'>Previous</a>
+        {% endif %}
+
+        <span style="color: rgb(255, 255, 255);" class= 'current'>
+          Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}
+        </span>
+        {% if object_list.has_next %}
+        <a style="color: white;" href='?page={{ object_list.next_page_number }}'>Next</a>
+
+        <a style="color: white;" href='?page={{ object_list.paginator.num_pages }}'>Last</a>
+        {% endif %}
+
+
+
+        <style>
+          .pagination {
+            position: fixed;
+            margin: auto;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 50px;
+            padding:15px;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+                  }
+          </style>
+      </span>
+    </div>
+
+
+
+
+      </span>
+
+
+
+
+
+
+  {% endfor %}
+
+
+{% endblock %}
+
+
