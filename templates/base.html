@@ -3,15 +3,19 @@
 {% block content %}
 
 <h1>base</h1>
+
+
+
+
   {% for instance in object_list %}
   <h1>{{ instance.header }}  </h1>
   <br><br><br>
     <h4>{{ instance.description }}  </h4>
     <br><br>
     {% if  instance.rating  == "Video" %}
-    <h2 > Video Süresi : <span id="timer"></span>   </h2>
+    <h2 > Video Süresi : <span id="timer"></span></h2>
     <br>
-    <h2 > Video totalsecs: {{ instance.totalsecs }} </h2>
+     
     <br><br>
     <!--- MODAL -->
 
@@ -27,6 +31,22 @@
  <!-- Button trigger modal -->
 
 <!-- Button trigger modal -->
+
+
+<input type="hidden" id="myInput" value="{{ instance.video_sec }}">
+
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("myInput").value;
+    document.getElementById("demo").innerHTML = x;
+  }
+  </script>
 
 <div class="modal fade" id="ModalExample" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -47,9 +67,11 @@
  
 <script>
   window.onload=function() {
-    confirm("  Kameranız açılıyor. Tamam'a basınız");
-
-
+  
+        let confirmAction = confirm("Are you sure to execute this action?");
+        if (confirmAction) {
+          alert("Action successfully executed");
+          
 
       const part = [];
       let mediaRecorder;
@@ -93,6 +115,7 @@
          a.href=url;
          a.download='test.mp4';
          a.click();  
+         
       alert('Kayıt tamamlandı');
       return
     }
@@ -106,8 +129,20 @@
     if (sec < 0) {sec = "59"};
     return sec;
   }
+  
+        } else {
+          alert("Action canceled");
+        }
+ 
      
   } </script>
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("myInput").value;
+    document.getElementById("demo").innerHTML = x;
+  }
+  </script>
         </div>
     </div>
   </div>
@@ -117,7 +152,7 @@
   <video autoplay="false"  id="videoElement">
   </video>
  </div>
-
+ 
 
   {% else %}
   <main class="container">
