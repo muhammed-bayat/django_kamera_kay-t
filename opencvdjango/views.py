@@ -27,12 +27,13 @@ class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
         fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-        self.videoWriter = cv2.VideoWriter('video.avi', fourcc, 30.0, (640, 480))
+        self.videoWriter = cv2.VideoWriter('video.avi', fourcc, 30.0, (640, 480), True)
         queryset=UserEntry.objects.all()
         for instance in queryset:
             self.hrs = instance.video_time
             self.mins = instance.video_sec
         print("database oku",self.hrs)
+        print("database oku",self.mins)
         print("database oku",self.mins)
         self.totalsecs = 3600 * self.hrs + 30 * self.mins
 
