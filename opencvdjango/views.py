@@ -3,9 +3,11 @@ import threading
 import cv2
 from django.core.paginator import Paginator
 from django.http import StreamingHttpResponse
+from django.http.response import JsonResponse
 from django.shortcuts import render
-
-
+from .models import UserEntry
+from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 from opencvdjango.models import UserEntry
 
@@ -65,3 +67,21 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+def upload_file(request):
+    file = request.FILES.get('file')
+    fss=FileSystemStorage()
+    filename=fss.save(file.name,file)
+    url=fss.url(filename)
+    print ("******************")
+
+    print(file.name)
+    print(url)
+    print(file)
+    print(filename)
+    print("******************")
+    UserEntry.objects.create(header="test",doc=url)
+    
+
+    return JsonResponse({"url":url})
+
+  

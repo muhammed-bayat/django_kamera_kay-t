@@ -18,6 +18,8 @@ class UserEntry(models.Model):
     video_sec = models.IntegerField(default=00, verbose_name="Video Süresi Saniye: ",
                                     validators=[MinValueValidator(0), MaxValueValidator(60)])
 
+    doc = models.FileField(null=True, blank=True)
+ 
     cevap_a = models.CharField(max_length=150, verbose_name="Şık A", default="Lorem İpsum A")
     cevap_b = models.CharField(max_length=150, verbose_name="Şık B", default="Lorem İpsum B")
     cevap_c = models.CharField(max_length=150, verbose_name="Şık C", default="Lorem İpsum C")
