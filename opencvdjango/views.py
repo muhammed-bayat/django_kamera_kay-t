@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.http import StreamingHttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import render
-from .models import UserEntry
+from .models import UserAnswer, UserEntry
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
@@ -79,9 +79,9 @@ def upload_file(request):
     print(file)
     print(filename)
     print("******************")
-    UserEntry.objects.create(header="test",doc=url)
+    UserAnswer.objects.create(header="test",doc=url)
     
 
     return JsonResponse({"url":url})
 
-  
+  	
