@@ -73,13 +73,13 @@ def upload_file(request):
     filename=fss.save(file.name,file)
     url=fss.url(filename)
     print ("******************")
-
+    print (fss)
     print(file.name)
     print(url)
     print(file)
     print(filename)
     print("******************")
-    UserAnswer.objects.create(header="test",doc=url)
+    UserAnswer.objects.create(header="test",doc=file)
     
 
     return JsonResponse({"url":url})
