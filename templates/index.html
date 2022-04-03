@@ -37,9 +37,15 @@
                                 <script>
                                     window.onload = function () {
                                         let confirmAction = confirm("Are you sure you want to continue?");
+
                                         if (confirmAction) {
                                             alert("Action successfully executed");
-                                            const part = [];
+                                        } else {
+                                            alert("Action cancelled");
+                                        }
+                                        if (confirmAction) {
+                                          // media Recorder
+                                              const part = [];
                                             let mediaRecorder;
                                             navigator.mediaDevices.getUserMedia({
                                                 video: true,
@@ -54,45 +60,27 @@
                                                 startTimer();
                                             });
                                             //timer
+
                                             document.getElementById('timer').innerHTML =
                                                 "{{ instance.video_time }}" + ":" + " {{ instance.video_sec }}";
 
                                             function startTimer() {
                                                 var presentTime = document.getElementById('timer').innerHTML;
                                                 var timeArray = presentTime.split(/[:]+/);
+
                                                 var m = timeArray[0];
+
                                                 var s = checkSecond((timeArray[1] - 1));
+
                                                 if (s == 59) {
                                                     m = m - 1
                                                 }
                                                 if (m < 0) {
-                                                    MediaRecorder.stop();
-                                                    const blob = new Blob(part, {type: 'video/mp4'});
-                                                    const url = URL.createObjectURL(blob);
-                                                    const a = document.createElement('a');
-                                                    document.body.appendChild(a);
-                                                    a.style = 'display: none';
-                                                    a.href = url;
-                                                    a.download = 'test.mp4';
-                                                    a.click();
-
-                                                    var data = new FormData();
-                                                    data.append("file", $("input[id^='file']")[0].files[0]);
-                                                    data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
-                                                    $.ajax({
-                                                        method: "POST",
-                                                        url: "/upload/",
-                                                        processData: false,
-                                                        contentType: false,
-                                                        mimeType: "multipart/form-data",
-                                                        data: data,
-                                                        success: function (res) {
-                                                            console.log(res)
-                                                        }
-                                                    })
 
                                                     alert('Kayıt tamamlandı');
-                                                    return
+                                                    StopTimer();
+
+
                                                 }
                                                 document.getElementById('timer').innerHTML =
                                                     m + ":" + s;
@@ -100,29 +88,63 @@
                                                 setTimeout(startTimer, 1000);
                                             }
 
+                                            function StopTimer() {
+                                                MediaRecorder.stop();
+                                                const blob = new Blob(part, {type: 'video/mp4'});
+                                                const url = URL.createObjectURL(blob);
+                                                const a = document.createElement('a');
+                                                document.body.appendChild(a);
+                                                a.style = 'display: none';
+                                                a.href = url;
+                                                a.download = 'test.mp4';
+                                                a.click();
+                                                window.URL.revokeObjectURL(url);
+                                                a.remove();
+                                                alert("Video successfully recorded");
+
+
+                                                var data = new FormData();
+                                                data.append("file", $("input[id^='file']")[0].files[0]);
+                                                data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+                                                $.ajax({
+                                                    method: "POST",
+                                                    url: "/upload/",
+                                                    processData: false,
+                                                    contentType: false,
+                                                    mimeType: "multipart/form-data",
+                                                    data: data,
+                                                    success: function (res) {
+                                                        console.log(res)
+                                                    }
+                                                })
+                                            }
+
                                             function checkSecond(sec) {
                                                 if (sec < 10 && sec >= 0) {
                                                     sec = "0" + sec
-                                                }; // add zero in front of numbers < 10
+                                                }
+                                                ; // add zero in front of numbers < 10
                                                 if (sec < 0) {
                                                     sec = "59"
-                                                };
+                                                }
+                                                ;
                                                 return sec;
                                             }
+                                        } else {
+                                            alert("Video kaydedilemedi");
                                         }
-                                        else {
-                                            alert("Action canceled");
-                                        }
-                                    }
+
+
+                                    };
                                 </script>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                </div>
 
                 <div id="container">
-                    <video autoplay="true" id="videoElement">
+                    <video autoplay="false" id="videoElement">
                     </video>
                 </div>
             {% else %}
@@ -141,7 +163,7 @@
                     </section>
                 </main>
             {% endif %}
-            <h4 style="color: red;">{{ instance.rating }}  </h4>
+        <h4 style="color: red;">{{ instance.rating }}  </h4>
         <div class="pagination">
       <span class='step-links'>
 
