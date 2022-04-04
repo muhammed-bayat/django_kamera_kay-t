@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from django.utils.translation import ugettext_lazy as _
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'opencvdjango'
+    'apps.opencvdjango',
+    'translations',
+    'modeltranslation',
+
 ]
 
 MIDDLEWARE = [
@@ -105,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'tr-tr'
 
 TIME_ZONE = 'UTC'
 
@@ -119,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+ 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -127,11 +131,16 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/staticfiles/'
+STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
-MEDIA_URL = '/mediafiles/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles/mediafiles')
+ 
+MEDIA_URL='/' 
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
+gettext = lambda s: s
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "staticfiles"),
-]
+LANGUAGES = (
+    ('tr', gettext('Turkish')),
+    ('en', gettext('English')),
+)
+MODELTRANSLATION_LANGUAGES = ('tr', 'en')

@@ -1,8 +1,23 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from apps.common.mixins import AuditMixin
+
+
+class Cevap(AuditMixin):
+    """
+    Cevap modeli
+    """
+    cevap = models.CharField(max_length=500)
+    dogru = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.cevap
+
+
+
 # Create your models here.
-class UserEntry(models.Model):
+class UserEntry(AuditMixin):
     Rating = [
         ('Video', 'Video'),
         ('test', 'Test')
@@ -18,11 +33,14 @@ class UserEntry(models.Model):
     video_sec = models.IntegerField(default=00, verbose_name="Video Süresi Saniye: ",
                                     validators=[MinValueValidator(0), MaxValueValidator(60)])
 
-    cevap_a = models.CharField(max_length=150, verbose_name="Şık A", default="Lorem İpsum A")
-    cevap_b = models.CharField(max_length=150, verbose_name="Şık B", default="Lorem İpsum B")
-    cevap_c = models.CharField(max_length=150, verbose_name="Şık C", default="Lorem İpsum C")
-    cevap_d = models.CharField(max_length=150, verbose_name="Şık D", default="Lorem İpsum D")
-    cevap_e = models.CharField(max_length=150, verbose_name="Şık E", default="Lorem İpsum E")
+ 
+    cevaplar= models.ManyToManyField(Cevap, blank=True)
+    def __str__(self) -> str:
+        return f"{self.header}"
+
+class UserAnswer(AuditMixin):
+    header = models.CharField(max_length=50)
+    doc = models.FileField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.header}"
