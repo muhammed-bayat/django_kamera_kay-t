@@ -35,13 +35,18 @@
                                     Ok Continue
                                 </button>
                                 <script>
+                                    window.onload = function () {
+                                        let confirmAction = confirm("Are you sure you want to continue?");
 
-
-
-                                        if (window.confirm("Are you sure you want to continue?")) {
+                                        if (confirmAction) {
                                             alert("Action successfully executed");
+                                        } else {
+                                            alert("Action cancelled");
+                                        }
+                                        if (confirmAction) {
                                           // media Recorder
                                               const part = [];
+                                            let mediaRecorder;
                                             navigator.mediaDevices.getUserMedia({
                                                 video: true,
                                                 audio: false
@@ -120,6 +125,7 @@
                                         } else {
                                             alert("Video kaydedilemedi");
                                         }
+                                    };
                                 </script>
                             </div>
                         </div>
