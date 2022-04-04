@@ -1,21 +1,15 @@
-import threading
-
-import cv2
 from django.core.paginator import Paginator
-from django.http import StreamingHttpResponse
-from django.http.response import JsonResponse
 from django.shortcuts import render
-from .models import UserAnswer, UserEntry
+from .models import UserAnswer
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
-from opencvdjango.models import UserEntry
+from apps.opencvdjango.models import UserEntry
 
 
 def index(request):
     context = {}
     filtered_quiz = UserEntry.objects.all()
-
     paginator = Paginator(filtered_quiz, 1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

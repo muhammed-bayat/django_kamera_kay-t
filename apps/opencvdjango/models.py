@@ -1,8 +1,10 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from apps.common.mixins import AuditMixin
 
-class Cevap(models.Model):
+
+class Cevap(AuditMixin):
     """
     Cevap modeli
     """
@@ -15,7 +17,7 @@ class Cevap(models.Model):
 
 
 # Create your models here.
-class UserEntry(models.Model):
+class UserEntry(AuditMixin):
     Rating = [
         ('Video', 'Video'),
         ('test', 'Test')
@@ -36,7 +38,7 @@ class UserEntry(models.Model):
     def __str__(self) -> str:
         return f"{self.header}"
 
-class UserAnswer(models.Model):
+class UserAnswer(AuditMixin):
     header = models.CharField(max_length=50)
     doc = models.FileField(null=True, blank=True)
 

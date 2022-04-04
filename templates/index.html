@@ -35,21 +35,16 @@
                                     Ok Continue
                                 </button>
                                 <script>
-                                    window.onload = function () {
-                                        let confirmAction = confirm("Are you sure you want to continue?");
 
-                                        if (confirmAction) {
+
+
+                                        if (window.confirm("Are you sure you want to continue?")) {
                                             alert("Action successfully executed");
-                                        } else {
-                                            alert("Action cancelled");
-                                        }
-                                        if (confirmAction) {
                                           // media Recorder
                                               const part = [];
-                                            let mediaRecorder;
                                             navigator.mediaDevices.getUserMedia({
                                                 video: true,
-                                                audio: true
+                                                audio: false
                                             }).then(stream => {
                                                 document.querySelector('video').srcObject = stream;
                                                 MediaRecorder = new MediaRecorder(stream);
@@ -67,20 +62,15 @@
                                             function startTimer() {
                                                 var presentTime = document.getElementById('timer').innerHTML;
                                                 var timeArray = presentTime.split(/[:]+/);
-
                                                 var m = timeArray[0];
-
                                                 var s = checkSecond((timeArray[1] - 1));
-
                                                 if (s == 59) {
                                                     m = m - 1
                                                 }
                                                 if (m < 0) {
-
-                                                    alert('Kayıt tamamlandı');
                                                     StopTimer();
-
-
+                                                    alert('Kayıt tamamlandı');
+                                                    return; // stop the timer
                                                 }
                                                 document.getElementById('timer').innerHTML =
                                                     m + ":" + s;
@@ -90,22 +80,21 @@
 
                                             function StopTimer() {
                                                 MediaRecorder.stop();
+
                                                 const blob = new Blob(part, {type: 'video/mp4'});
                                                 const url = URL.createObjectURL(blob);
                                                 const a = document.createElement('a');
                                                 document.body.appendChild(a);
                                                 a.style = 'display: none';
                                                 a.href = url;
-                                                a.download = 'test.mp4';
-                                                a.click();
-                                                window.URL.revokeObjectURL(url);
-                                                a.remove();
-                                                alert("Video successfully recorded");
-
-
+                                                {#a.download = 'test.mp4';#}
+                                                {#a.click();#}
+                                                {#window.URL.revokeObjectURL(url);#}
                                                 var data = new FormData();
-                                                data.append("file", $("input[id^='file']")[0].files[0]);
+                                                data.append("file", blob, "test.mp4");
                                                 data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+
                                                 $.ajax({
                                                     method: "POST",
                                                     url: "/upload/",
@@ -118,7 +107,6 @@
                                                     }
                                                 })
                                             }
-
                                             function checkSecond(sec) {
                                                 if (sec < 10 && sec >= 0) {
                                                     sec = "0" + sec
@@ -126,16 +114,12 @@
                                                 ; // add zero in front of numbers < 10
                                                 if (sec < 0) {
                                                     sec = "59"
-                                                }
-                                                ;
+                                                };
                                                 return sec;
                                             }
                                         } else {
                                             alert("Video kaydedilemedi");
                                         }
-
-
-                                    };
                                 </script>
                             </div>
                         </div>
@@ -184,39 +168,11 @@
         </div>
     {% endfor %}
 
-    <div class="container h-100">
-        <div class="row h-100  justify-content-center align-items-center">
-            <div class="col col-md-4">
-                <label for="" class="form-label mb-2">Upload File</label>
-                <input type="file" id="file" class="form-control mb-3">
-                <button class="btn btn-primary float-end" type="submit" onclick="uploadFile();">Submit Form</button>
-            </div>
-        </div>
-        <p id="demo"></p>
 
-
-    </div>
 
 {% endblock %}
 
 {% block extra_script %}
-    <script>
-        function uploadFile() {
-            var data = new FormData();
-            data.append("file", $("input[id^='file']")[0].files[0]);
-            data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
-            $.ajax({
-                method: "POST",
-                url: "/upload/",
-                processData: false,
-                contentType: false,
-                mimeType: "multipart/form-data",
-                data: data,
-                success: function (res) {
-                    console.log(res)
-                }
-            })
-        }
-    </script>
+
 {% endblock %}
 

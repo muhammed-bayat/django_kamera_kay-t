@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from opencvdjango.models import UserEntry
 from .models import UserEntry, UserAnswer,Cevap
 
 

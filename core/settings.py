@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from django.utils.translation import ugettext_lazy as _
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'opencvdjango'
+    'apps.opencvdjango',
+    'translations',
+    'modeltranslation',
+
 ]
 
 MIDDLEWARE = [
@@ -133,3 +137,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
  
 MEDIA_URL='/' 
 MEDIA_ROOT = BASE_DIR / 'mediafiles'
+gettext = lambda s: s
+
+LANGUAGES = (
+    ('tr', gettext('Turkish')),
+    ('en', gettext('English')),
+)
+MODELTRANSLATION_LANGUAGES = ('tr', 'en')

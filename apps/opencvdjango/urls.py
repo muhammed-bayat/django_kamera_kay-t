@@ -1,8 +1,7 @@
 from django.urls import path
 from .views import *
 
-from core import settings
-from opencvdjango import views
+from apps.opencvdjango import views
 app_name = 'opencvdjango'
 
 urlpatterns = [
