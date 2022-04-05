@@ -81,13 +81,13 @@ def index(request):
 def upload_file(request):
     file = request.FILES.get('file')
     fss=FileSystemStorage()
-    filename=fss.save(file.name,file)
-    url=fss.url(filename)
 
 
-    UserAnswer.objects.create(header=file.name,doc=file)
+
+
+    UserAnswer.objects.create(header=file,doc=file)
     
 
-    return JsonResponse({"url":url})
+    return JsonResponse({"url":file})
 
   	

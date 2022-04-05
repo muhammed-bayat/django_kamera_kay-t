@@ -5,7 +5,7 @@ from .models import UserEntry, UserAnswer
 
 
 class UserEntryAdmin(admin.ModelAdmin):
-    list_display = ('header', 'description', 'created_date', 'rating')
+    list_display = ('header', 'description', 'created_date')
 
 admin.site.register(UserEntry, UserEntryAdmin)
 
