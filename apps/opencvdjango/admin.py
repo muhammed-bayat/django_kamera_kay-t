@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import UserEntry, UserAnswer,Cevap
+from .models import UserEntry, UserAnswer
 
 
 class UserEntryAdmin(admin.ModelAdmin):
@@ -13,4 +13,3 @@ class UserAnswerAdmin(admin.ModelAdmin):
     list_display = ('header', 'doc')
 
 admin.site.register(UserAnswer, UserAnswerAdmin)
-admin.site.register(Cevap)

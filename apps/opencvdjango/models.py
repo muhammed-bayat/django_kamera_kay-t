@@ -4,15 +4,7 @@ from django.db import models
 from apps.common.mixins import AuditMixin
 
 
-class Cevap(AuditMixin):
-    """
-    Cevap modeli
-    """
-    cevap = models.CharField(max_length=500)
-    dogru = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.cevap
 
 
 # Create your models here.
@@ -30,7 +22,7 @@ class UserEntry(AuditMixin):
                                      validators=[MinValueValidator(0), MaxValueValidator(60)])
     video_sec = models.IntegerField(default=00, verbose_name="Video Süresi Saniye: ",
                                     validators=[MinValueValidator(0), MaxValueValidator(60)])
-    cevaplar = models.ManyToManyField(Cevap, blank=True)
+
 
     def __str__(self) -> str:
         return f"{self.header}"

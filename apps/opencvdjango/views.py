@@ -1,7 +1,8 @@
+import cv2
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import UserAnswer
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse, HttpResponse
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
 from apps.opencvdjango.models import UserEntry
@@ -17,17 +18,27 @@ def index(request):
     return render(request, "index.html", context)
 
 
-def quiz(request):
-    return render(request, "quiz.html")
+# def opencv(request):
+#     try:
+#         cam =VideoCamera()
+#         return StreamingHttpResponse(cam.gen(), content_type="multipart/x-mixed-replace;boundary=frame")
+#     except:
+#         return HttpResponse("Error")
+#     return render(request, "opencv.html")
+#
 
-#
+
 # def webcam_feed(request):
-#     return StreamingHttpResponse(gen(VideoCamera()),content_type='multipart/x-mixed-replace; boundary=frame')
-#
+#     try:
+#         cam = VideoCamera()
+#         return StreamingHttpResponse(cam.gen(), content_type="multipart/x-mixed-replace;boundary=frame")
+#     except Exception as e:
+#         return HttpResponse("Error", e)
+
 #
 # class VideoCamera(object):
 #     def __init__(self):
-#         self.video = cv2.VideoCapture(0)
+#         self.video = cv2.VideoCapture(1)
 #         fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
 #         self.videoWriter = cv2.VideoWriter('video.avi', fourcc, 30.0, (640, 480), True)
 #         queryset=UserEntry.objects.all()

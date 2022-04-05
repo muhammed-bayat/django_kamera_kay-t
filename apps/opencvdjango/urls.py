@@ -6,7 +6,7 @@ app_name = 'opencvdjango'
 
 urlpatterns = [
     path('', index, name='index'),
-    path('test', quiz, name='quiz'),
+    # path('test', opencv, name='quiz'),
     # path('webcam_feed', views.webcam_feed, name='webcam_feed'),
     path('upload/', views.upload_file),
 
