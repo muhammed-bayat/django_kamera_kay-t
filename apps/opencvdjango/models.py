@@ -9,20 +9,14 @@ from apps.common.mixins import AuditMixin
 
 # Create your models here.
 class UserEntry(AuditMixin):
-    Rating = [
-        ('Video', 'Video'),
-        ('test', 'Test')
-    ]
+
     header = models.CharField(max_length=600)
     description = models.TextField(max_length=1500)
     created_date = models.DateTimeField(auto_now_add=True)
-    rating = models.CharField(max_length=15, choices=Rating)
-
     video_time = models.IntegerField(default=00, verbose_name="Video Süresi Dakika: ",
                                      validators=[MinValueValidator(0), MaxValueValidator(60)])
     video_sec = models.IntegerField(default=00, verbose_name="Video Süresi Saniye: ",
                                     validators=[MinValueValidator(0), MaxValueValidator(60)])
-
 
     def __str__(self) -> str:
         return f"{self.header}"

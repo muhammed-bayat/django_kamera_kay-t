@@ -40,7 +40,7 @@
                     <div class="content">
                         <h6>{{ instance.header }}</h6>
                         <span>{{ instance.description }}  </span>
-                        {% if  instance.rating  == "Video" %}
+
                             <div class="row">
                                 <h4> Video Süresi <span id="timer"></span></h4>
                             </div>
@@ -48,23 +48,7 @@
                                 <video autoplay="false" id="videoElement">
                                 </video>
                             </div>
-                        {% else %}
-                            <main class="container">
-                                <section class="section_1">
-                                    <form class="form_1">
-                                        <span class="form_1_circle"></span>
-                                        {% for place in instance.cevaplar.all %}
-                                            <div>
-                                                <input checked type="radio" name="section_1_radio" class="input"
-                                                       id="Pepperoni"/>
-                                                <label class="cradio" for="Pepperoni"></label>
-                                                <label for="Pepperoni">{{ place |join:", " }}</label>
-                                            </div>
-                                        {% endfor %}
-                                    </form>
-                                </section>
-                            </main>
-                        {% endif %}
+
                         <h4 style="color: red;">{{ instance.rating }}  </h4>
                         <div class="pagination">
                           <span class='step-links'>
