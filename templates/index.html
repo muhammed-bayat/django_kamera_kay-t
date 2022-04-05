@@ -2,159 +2,71 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
-
-
-
-    {% for instance in object_list %}
-        <div id="container">
-            <h1>{{ instance.header }}  </h1>
-            <h4>{{ instance.description }}  </h4>
-            {% if  instance.rating  == "Video" %}
-                <h2> Video Süresi : <span id="timer"></span></h2>
-                <div class="modal fade" id="ModalExample" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel" style="color: black;">KAMERA ONAY </h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">KAPAT</span>
-                                </button>
-                            </div>
-                            <div class="modal-body" style="color: black;">Kameranızı açmak için lütfen onaylayın. Onay
-                                butonuna bastıktan sonra otomatik kayıt başlayacaktır
-                            </div>
-                            <p>
-                                <img src="data:image/jpeg;base64,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"
-                                     alt=""/></p>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                                <button class="btn btn-success " type="button" onclick="startTimer()"
-                                        data-dismiss="modal">
-                                    Ok Continue
-                                </button>
-                                <script>
-                                    window.onload = function () {
-                                        let confirmAction = confirm("Are you sure you want to continue?");
-
-                                        if (confirmAction) {
-                                            alert("Action successfully executed");
-                                        } else {
-                                            alert("Action cancelled");
-                                        }
-                                        if (confirmAction) {
-                                          // media Recorder
-                                              const part = [];
-                                            let mediaRecorder;
-                                            navigator.mediaDevices.getUserMedia({
-                                                video: true,
-                                                audio: false
-                                            }).then(stream => {
-                                                document.querySelector('video').srcObject = stream;
-                                                MediaRecorder = new MediaRecorder(stream);
-                                                MediaRecorder.start(1000);
-                                                MediaRecorder.ondataavailable = function (e) {
-                                                    part.push(e.data);
-                                                }
-                                                startTimer();
-                                            });
-                                            //timer
-
-                                            document.getElementById('timer').innerHTML =
-                                                "{{ instance.video_time }}" + ":" + " {{ instance.video_sec }}";
-
-                                            function startTimer() {
-                                                var presentTime = document.getElementById('timer').innerHTML;
-                                                var timeArray = presentTime.split(/[:]+/);
-                                                var m = timeArray[0];
-                                                var s = checkSecond((timeArray[1] - 1));
-                                                if (s == 59) {
-                                                    m = m - 1
-                                                }
-                                                if (m < 0) {
-                                                    StopTimer();
-                                                    alert('Kayıt tamamlandı');
-                                                    return; // stop the timer
-                                                }
-                                                document.getElementById('timer').innerHTML =
-                                                    m + ":" + s;
-                                                console.log(s)
-                                                setTimeout(startTimer, 1000);
-                                            }
-
-                                            function StopTimer() {
-                                                MediaRecorder.stop();
-
-                                                const blob = new Blob(part, {type: 'video/mp4'});
-                                                const url = URL.createObjectURL(blob);
-                                                const a = document.createElement('a');
-                                                document.body.appendChild(a);
-                                                a.style = 'display: none';
-                                                a.href = url;
-                                                {#a.download = 'test.mp4';#}
-                                                {#a.click();#}
-                                                {#window.URL.revokeObjectURL(url);#}
-                                                var data = new FormData();
-                                                data.append("file", blob, "test.mp4");
-                                                data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
-
-
-                                                $.ajax({
-                                                    method: "POST",
-                                                    url: "/upload/",
-                                                    processData: false,
-                                                    contentType: false,
-                                                    mimeType: "multipart/form-data",
-                                                    data: data,
-                                                    success: function (res) {
-                                                        console.log(res)
-                                                    }
-                                                })
-                                            }
-                                            function checkSecond(sec) {
-                                                if (sec < 10 && sec >= 0) {
-                                                    sec = "0" + sec
-                                                }
-                                                ; // add zero in front of numbers < 10
-                                                if (sec < 0) {
-                                                    sec = "59"
-                                                };
-                                                return sec;
-                                            }
-                                        } else {
-                                            alert("Video kaydedilemedi");
-                                        }
-                                    };
-                                </script>
-                            </div>
+    <div class="container">
+    <div class="content">
+        <div class="row-cols-md-1">
+            <div class="row-cols-md-1">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLabel">
+                    Hazır olduğunuzda butona tıklayınız
+                </button>
+            </div>
+            <div class="modal fade" id="exampleModalLabel" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span aria-hidden="true">KAPAT</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="color: black;">Kameranızı açmak için lütfen onaylayın. Onay
+                            butonuna bastıktan sonra otomatik kayıt başlayacaktır
+                        </div>
+                        <p>
+                            <img src="data:image/jpeg;base64,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"
+                                 alt=""/></p>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                            <button class="btn btn-success " type="button" id='myBtn' onclick="startFunction()"
+                                    data-dismiss="modal">
+                                Ok Continue
+                            </button>
                         </div>
                     </div>
                 </div>
-                </div>
-
-                <div id="container">
-                    <video autoplay="false" id="videoElement">
-                    </video>
-                </div>
-            {% else %}
-                <main class="container">
-                    <section class="section_1">
-                        <form class="form_1">
-                            <span class="form_1_circle"></span>
-                            {% for place in instance.cevaplar.all %}
-                                <div>
-                                    <input checked type="radio" name="section_1_radio" class="input" id="Pepperoni"/>
-                                    <label class="cradio" for="Pepperoni"></label>
-                                    <label for="Pepperoni">{{ place |join:", " }}</label>
-                                </div>
-                            {% endfor %}
-                        </form>
-                    </section>
-                </main>
-            {% endif %}
-        <h4 style="color: red;">{{ instance.rating }}  </h4>
-        <div class="pagination">
+            </div>
+            {% for instance in object_list %}
+                <div class="content">
+                    <h6>{{ instance.header }}</h6>
+                    <span>{{ instance.description }}  </span>
+                    {% if  instance.rating  == "Video" %}
+                        <div class="row">
+                            <h4> Video Süresi <span id="timer"></span></h4>
+                        </div>
+                        <div>
+                            <video autoplay="false" id="videoElement">
+                            </video>
+                        </div>
+                    {% else %}
+                        <main class="container">
+                            <section class="section_1">
+                                <form class="form_1">
+                                    <span class="form_1_circle"></span>
+                                    {% for place in instance.cevaplar.all %}
+                                        <div>
+                                            <input checked type="radio" name="section_1_radio" class="input"
+                                                   id="Pepperoni"/>
+                                            <label class="cradio" for="Pepperoni"></label>
+                                            <label for="Pepperoni">{{ place |join:", " }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </form>
+                            </section>
+                        </main>
+                    {% endif %}
+                    <h4 style="color: red;">{{ instance.rating }}  </h4>
+                    <div class="pagination">
       <span class='step-links'>
 
         {% if object_list.has_previous %}
@@ -171,14 +83,110 @@
               <a style="color: white;" href='?page={{ object_list.paginator.num_pages }}'>Last</a>
           {% endif %}
       </span>
-        </div>
-    {% endfor %}
+                    </div>
 
-
+                </div>
+                </div>
+                </div>
+            {% endfor %}
 
 {% endblock %}
 
 {% block extra_script %}
+    <script>
+        function startFunction() {
+            var video = document.getElementById("videoElement");
+
+            var timer = document.getElementById("timer");
+            // media Recorder
+            const part = [];
+            let mediaRecorder;
+            navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: false
+            }).then(stream => {
+                document.querySelector('video').srcObject = stream;
+                MediaRecorder = new MediaRecorder(stream);
+                MediaRecorder.start(1000);
+                MediaRecorder.ondataavailable = function (e) {
+                    part.push(e.data);
+                }
+                startTimer();
+            });
+            //timer
+            {% for instance in object_list %}
+                document.getElementById('timer').innerHTML =
+                    "{{ instance.video_time }}" + ":" + " {{ instance.video_sec }}";
+            {% endfor %}
+            function startTimer() {
+                var presentTime = document.getElementById('timer').innerHTML;
+                var timeArray = presentTime.split(/[:]+/);
+                var m = timeArray[0];
+                var s = checkSecond((timeArray[1] - 1));
+                if (s == 59) {
+                    m = m - 1
+                }
+                if (m < 0) {
+                    StopTimer();
+
+                    alert('Kayıt tamamlandı');
+                    return; // stop the timer
+                }
+                document.getElementById('timer').innerHTML =
+                    m + ":" + s;
+                console.log(s)
+                setTimeout(startTimer, 1000);
+            }
+
+            function StopTimer() {
+
+                MediaRecorder.stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                MediaRecorder.stop();
+
+
+                const blob = new Blob(part, {type: 'video/mp4'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                document.body.appendChild(a);
+                a.style = 'display: none';
+                a.href = url;
+                {#a.download = 'test.mp4';#}
+                {#a.click();#}
+                {#window.URL.revokeObjectURL(url);#}
+                var data = new FormData();
+                data.append("file", blob, "test.mp4");
+                data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+                $.ajax({
+                    method: "POST",
+                    url: "/upload/",
+                    processData: false,
+                    contentType: false,
+                    mimeType: "multipart/form-data",
+                    data: data,
+                    wait: true,
+                    success: function (res) {
+                        alert("Kayıt başarılı bir şekilde gönderildi", res);
+                    }
+                })
+            }
+
+            function checkSecond(sec) {
+                if (sec < 10 && sec >= 0) {
+                    sec = "0" + sec
+                }
+                ; // add zero in front of numbers < 10
+                if (sec < 0) {
+                    sec = "59"
+                }
+                ;
+                return sec;
+            }
+        }
+    </script>
+
 
 {% endblock %}
 

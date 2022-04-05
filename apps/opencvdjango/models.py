@@ -15,16 +15,14 @@ class Cevap(AuditMixin):
         return self.cevap
 
 
-
 # Create your models here.
 class UserEntry(AuditMixin):
     Rating = [
         ('Video', 'Video'),
         ('test', 'Test')
     ]
-
-    header = models.CharField(max_length=50)
-    description = models.TextField(max_length=300)
+    header = models.CharField(max_length=600)
+    description = models.TextField(max_length=1500)
     created_date = models.DateTimeField(auto_now_add=True)
     rating = models.CharField(max_length=15, choices=Rating)
 
@@ -32,11 +30,11 @@ class UserEntry(AuditMixin):
                                      validators=[MinValueValidator(0), MaxValueValidator(60)])
     video_sec = models.IntegerField(default=00, verbose_name="Video Süresi Saniye: ",
                                     validators=[MinValueValidator(0), MaxValueValidator(60)])
+    cevaplar = models.ManyToManyField(Cevap, blank=True)
 
- 
-    cevaplar= models.ManyToManyField(Cevap, blank=True)
     def __str__(self) -> str:
         return f"{self.header}"
+
 
 class UserAnswer(AuditMixin):
     header = models.CharField(max_length=50)
