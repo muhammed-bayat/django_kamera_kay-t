@@ -4,12 +4,8 @@ from django.db import models
 from apps.common.mixins import AuditMixin
 
 
-
-
-
 # Create your models here.
 class UserEntry(AuditMixin):
-
     header = models.CharField(max_length=600)
     description = models.TextField(max_length=1500)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -25,7 +21,6 @@ class UserEntry(AuditMixin):
         verbose_name = "Soru Girişi"
         verbose_name_plural = "Soru Girişleri"
         ordering = ["id"]
-
 
 
 class UserAnswer(AuditMixin):

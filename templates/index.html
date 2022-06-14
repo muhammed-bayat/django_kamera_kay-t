@@ -80,7 +80,6 @@
                 </div>
             </div>
         </div>
-        </div>
     {% endfor %}
 
 
@@ -143,7 +142,7 @@
                     const params = new URLSearchParams(window.location.search)
                     let page_number = params.has("page") ? parseInt(params.get("page")) : 1
                     window.location.href = `?page=${page_number + 1}`
-                }
+                },
             })
         }
 
@@ -166,7 +165,7 @@
             // media Recorder
             navigator.mediaDevices.getUserMedia({
                 video: true,
-                audio: false,
+                audio: true,
                 recorderType: 'video'
             }).then(stream => {
                 document.querySelector('video').srcObject = stream;
@@ -177,7 +176,8 @@
                     videoData.push(e.data);
                 }
                 startTimer(mediaRecorder);
-            });
+            })
+                .catch(err => alert(err));
             //timer
             {% for instance in object_list %}
                 document.getElementById('timer').innerHTML =
