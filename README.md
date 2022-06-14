@@ -220,3 +220,10 @@ def upload_file(request):
     return JsonResponse({"file": file.name, "size": file.size})
 ```
 
+# Hata Ayıklama
+
+Geliştirme aşamasında test amaçlı admin hesabı oluşturulmuştur.
+
+* Kullanıcı adı => ``test``
+* Şifre => ``123``
+
