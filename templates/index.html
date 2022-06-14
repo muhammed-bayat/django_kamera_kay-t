@@ -56,7 +56,6 @@
                             <video autoplay="false" id="videoElement">
                             </video>
                         </div>
-
                         <h4 style="color: red;">{{ instance.rating }}  </h4>
                         <div class="pagination">
                           <span class='step-links'>
@@ -90,15 +89,81 @@
 
 {% block extra_script %}
     <script>
+        // global variables
+        let videoData = [];
+
+        function startTimer(mediaRecorder) {
+            const presentTime = document.getElementById('timer').innerHTML;
+            const timeArray = presentTime.split(/[:]+/);
+            let minute = timeArray[0];
+            let second = checkSecond((timeArray[1] - 1));
+            if (second == 59)
+                minute -= 1
+
+            if (minute < 0) {
+                StopTimer(mediaRecorder);
+                alert('Kayıt tamamlandı');
+                return; // stop the timer
+            }
+            document.getElementById('timer').innerHTML = minute + ":" + second;
+            console.log(second)
+            setTimeout(() => startTimer(mediaRecorder), 1000);
+        }
+
+        function StopTimer(mediaRecorder) {
+            mediaRecorder.stream.getTracks().forEach(track => {
+                track.stop();
+                document.querySelector('video').srcObject = null;
+            });
+            mediaRecorder.stop();
+            const blob = new Blob(videoData, {type: "video/mp4;codecs=avc1"});
+            //const url = URL.createObjectURL(blob);
+            //const a = document.createElement('a');
+            //document.body.appendChild(a);
+            //a.style = 'display: none';
+            //a.href = url;
+            {#a.download = 'test.mp4';#}
+            {#a.click();#}
+            {#window.URL.revokeObjectURL(url);#}
+            const data = new FormData();
+            data.append("file", blob, "testt.mp4");
+            data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+            $.ajax({
+                method: "POST",
+                url: "/upload/",
+                processData: false,
+                contentType: false,
+                cache: false,
+                mimeType: "multipart/form-data",
+                data: data,
+                wait: true,
+                success: function (res) {
+                    alert("Kayıt başarılı bir şekilde gönderildi", res);
+                    const params = new URLSearchParams(window.location.search)
+                    let page_number = params.has("page") ? parseInt(params.get("page")) : 1
+                    window.location.href = `?page=${page_number + 1}`
+                }
+            })
+        }
+
+        function checkSecond(sec) {
+            if (sec < 10 && sec >= 0) {
+                sec = "0" + sec
+            }
+            // add zero in front of numbers < 10
+            if (sec < 0) {
+                sec = "59"
+            }
+            return sec;
+        }
+
         function startFunction() {
-            var video = document.getElementById("videoElement");
+            videoData = [] // reset video data
+            const video = document.getElementById("videoElement");
             document.getElementById("videTimeText").hidden = false;
 
-
-            var timer = document.getElementById("timer");
             // media Recorder
-            const part = [];
-            let mediaRecorder;
             navigator.mediaDevices.getUserMedia({
                 video: true,
                 audio: false,
@@ -106,90 +171,19 @@
             }).then(stream => {
                 document.querySelector('video').srcObject = stream;
                 video.muted = true;
-                MediaRecorder = new MediaRecorder(stream);
-                MediaRecorder.start(1000);
-                MediaRecorder.ondataavailable = function (e) {
-                    part.push(e.data);
+                const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start(1000);
+                mediaRecorder.ondataavailable = function (e) {
+                    videoData.push(e.data);
                 }
-                startTimer();
+                startTimer(mediaRecorder);
             });
             //timer
             {% for instance in object_list %}
                 document.getElementById('timer').innerHTML =
                     "{{ instance.video_time }}" + ":" + " {{ instance.video_sec }}";
             {% endfor %}
-            function startTimer() {
-                var presentTime = document.getElementById('timer').innerHTML;
-                var timeArray = presentTime.split(/[:]+/);
-                var m = timeArray[0];
-                var s = checkSecond((timeArray[1] - 1));
-                if (s == 59) {
-                    m = m - 1
-                }
-                if (m < 0) {
-                    StopTimer();
-
-                    alert('Kayıt tamamlandı');
-                    return; // stop the timer
-                }
-                document.getElementById('timer').innerHTML =
-                    m + ":" + s;
-                console.log(s)
-                setTimeout(startTimer, 1000);
-            }
-
-            function StopTimer() {
-
-                MediaRecorder.stream.getTracks().forEach(track => {
-                    track.stop();
-                    document.querySelector('video').srcObject = null;
-
-
-                });
-                MediaRecorder.stop();
-                const blob = new Blob(part, {type: "video/mp4;codecs=avc1"});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                document.body.appendChild(a);
-                a.style = 'display: none';
-                a.href = url;
-                {#a.download = 'test.mp4';#}
-                {#a.click();#}
-                {#window.URL.revokeObjectURL(url);#}
-                var data = new FormData();
-                data.append("file", blob, "testt.mp4");
-                data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
-
-                $.ajax({
-                    method: "POST",
-                    url: "/upload/",
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    mimeType: "multipart/form-data",
-                    data: data,
-                    wait: true,
-                    success: function (res) {
-                        alert("Kayıt başarılı bir şekilde gönderildi", res);
-
-                    }
-                })
-            }
-
-            function checkSecond(sec) {
-                if (sec < 10 && sec >= 0) {
-                    sec = "0" + sec
-                }
-                ; // add zero in front of numbers < 10
-                if (sec < 0) {
-                    sec = "59"
-                }
-                ;
-                return sec;
-            }
         }
     </script>
-
-
 {% endblock %}
 

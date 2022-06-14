@@ -10,10 +10,23 @@ def index(request):
     context = {}
     filtered_quiz = UserEntry.objects.all()
     paginator = Paginator(filtered_quiz, 1)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context['object_list'] = page_obj
-    return render(request, "index.html", context)
+
+    page_number: str | None | int = request.GET.get('page')
+    match page_number:
+        case None:
+            page_obj = paginator.get_page(page_number)
+            context['object_list'] = page_obj
+            return render(request, "index.html", context)
+        case str() if page_number.isdigit():
+            page_obj = paginator.get_page(page_number)
+            page_number = int(page_number)
+            if page_number > paginator.num_pages:
+                print("page number out of range ")
+                return render(request, "endOfTest.html")
+            context['object_list'] = page_obj
+            return render(request, "index.html", context)
+        case _:
+            return render(request, "error.html", context)
 
 
 # def opencv(request):
