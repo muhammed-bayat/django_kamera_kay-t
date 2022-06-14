@@ -1,10 +1,8 @@
-import cv2
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import UserAnswer
-from django.http import JsonResponse, StreamingHttpResponse, HttpResponse
-from django.core.files.storage import FileSystemStorage
-# Create your views here.
+from django.http import JsonResponse
+
 from apps.opencvdjango.models import UserEntry
 
 
@@ -78,16 +76,11 @@ def index(request):
 #         yield (b'--frame\r\n'
 #                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+
 def upload_file(request):
     file = request.FILES.get('file')
-    fss=FileSystemStorage()
+    print("file.name", file.name, "file.size", file.size)
 
+    UserAnswer.objects.create(header=file, doc=file)
 
-
-
-    UserAnswer.objects.create(header=file,doc=file)
-    
-
-    return JsonResponse({"url":file})
-
-  	
+    return JsonResponse({"file": file.name, "size": file.size})

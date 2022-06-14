@@ -21,6 +21,12 @@ class UserEntry(AuditMixin):
     def __str__(self) -> str:
         return f"{self.header}"
 
+    class Meta:
+        verbose_name = "Soru Girişi"
+        verbose_name_plural = "Soru Girişleri"
+        ordering = ["id"]
+
+
 
 class UserAnswer(AuditMixin):
     header = models.CharField(max_length=50)

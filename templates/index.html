@@ -7,7 +7,6 @@
         <div class="container">
             <div class="content">
                 <div class="row-cols-md-1">
-
                     <div class="modal fade" id="exampleModalLabel" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
@@ -102,7 +101,7 @@
             let mediaRecorder;
             navigator.mediaDevices.getUserMedia({
                 video: true,
-                audio: true,
+                audio: false,
                 recorderType: 'video'
             }).then(stream => {
                 document.querySelector('video').srcObject = stream;
